@@ -1,0 +1,30 @@
+/*
+This is a completely new programing language designed by Sharif Hasan - CSE 11'th batch, PUST in association of Miss Jannatul Ferdos - CSE 11'th batch, PUST
+*No for loop
+*No variable declaration
+*No code generation. Have to work more
+
+*Keywords, fun and return
+*/
+
+x=5;
+y=8;
+z=x+y*8;
+
+fun factorial(x){//also supports multiple parameter
+    i=1;
+    result=1;
+    while(i<=x){
+        result*=i;
+    }
+    return result;
+}
+
+i=1;
+while(i<10){
+    if(i%2==0){
+        print(i+" is a even number!");
+    }
+    print("Result is: ");
+    print(factorial(i));
+}

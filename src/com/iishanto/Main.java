@@ -1,7 +1,8 @@
 package com.iishanto;
 
 
-import com.iishanto.Lexer.Lexer;
+
+import com.iishanto.Lexer.iiLexer;
 
 public class Main {
 
@@ -37,7 +38,8 @@ public class Main {
         Terminal _eq=new Terminal("=");
         Terminal _print=new Terminal("print");
 
-        /**
+        /*
+        **This is the grammar I am planning to implement**
          E  -> T E'
          E' -> + T E' | -TE' | ||TE' | epsilon
          T  -> F T'
@@ -45,7 +47,7 @@ public class Main {
          F  -> (E) | NUM
          NUM -> id|const
          ASSIGNMENT=<id> = E
-         STATEMENT = ASSIGNMENT|CONTROL|print(<id>)
+         STATEMENT = ASSIGNMENT|CONTROL|print(E)
          STATEMENTS=STATEMENT;STATEMENTS | epsilon
          CONTROL = while BODY | if BODY
          BODY=(E){STATEMENTS}
@@ -62,8 +64,13 @@ public class Main {
         STATEMENTS.goes(STATEMENT).and(_semicolon).and(STATEMENTS).or(_eps);
         CONTROL.goes(_while).and(BODY).or(_if).and(BODY);
         BODY.goes(_open_paren).and(E).and(_close_paren).and(_open_curly).and(STATEMENTS).and(_close_curly);
+        for(NonTerminal t:Symbol.getNonTerminalList()){
+            System.out.print(t.getSymbolName()+"\t\t");
+            for(Terminal x:t.first()) System.out.print(x.getTerminalValue()+" ");
+            System.out.println();
+        }
 
-        CFG cfg=new CFG(new Lexer(),Symbol.getTerminalList(),Symbol.getNonTerminalList());
+        CFG cfg=new CFG(new iiLexer(),Symbol.getTerminalList(),Symbol.getNonTerminalList());
         cfg.buildParseTable();
         cfg.parseLL1();
 

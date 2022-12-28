@@ -23,7 +23,7 @@ abstract public class Symbol {
     }
 
     public static Terminal getDollar() {
-        if (dollar == null) dollar = new Terminal("$");
+        if (dollar == null) {dollar = new Terminal("$");}
         return dollar;
     }
 
