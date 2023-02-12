@@ -6,7 +6,11 @@ This is a completely new programing language designed by Sharif Hasan - CSE 11't
 
 *Keywords, fun and return
 */
+for(a=5;a<5;a+=9){
+    while(1){
 
+    }
+}
 x=5;
 y=8;
 z=x+y*8;

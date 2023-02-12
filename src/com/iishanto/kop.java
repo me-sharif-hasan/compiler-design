@@ -3,6 +3,8 @@ package com.iishanto;
 
 import com.iishanto.Lexer.iiLexer;
 
+import java.util.concurrent.TimeUnit;
+
 class Kop {
 
     public static void main(String[] args) throws Exception {
@@ -40,6 +42,7 @@ class Kop {
         Terminal _comma=new Terminal(",");
         Terminal _if=new Terminal("if");
         Terminal _while=new Terminal("while");
+        Terminal _for=new Terminal("for");
         Terminal _plus=new Terminal("+");
         Terminal _unary_plus=new Terminal("++");
         Terminal _unary_minus=new Terminal("--");
@@ -89,12 +92,12 @@ class Kop {
 
          STATEMENT -> ASSIGNMENT ; |CONTROL |print(E) ;| ; |SCOPE|return E;
          (START) STATEMENTS -> STATEMENT STATEMENTS | epsilon
-         CONTROL -> while BODY | if BODY | fun <id>(ARGS) SCOPE
+         CONTROL -> while BODY | if BODY | for (ASSIGNMENT;E;ASSIGNMENT) STATEMENT | fun <id>(ARGS) SCOPE
          BODY -> (E) STATEMENT
          SCOPE -> {STATEMENTS}
          */
 
-        System.out.println("Parsing started ...");
+        System.out.println("\u001B[33m"+"Parsing started, please wait while parsing is finished!"+"\u001B[0m");
 
         E.goes(T).and(E_);
         E_.goes(_plus).and(T).and(E_).or(_minus).and(T).and(E_).or(_or).and(T).and(E_).or(_eps);
@@ -108,7 +111,7 @@ class Kop {
         ARGS_.goes(_comma).and(ARGS_P).or(_eps);
 
         INC_DEC.goes(_unary_plus).or(_unary_minus);
-        ASSIGNMENT.goes(_id).and(ASOFC).or(INC_DEC).and(_id);
+        ASSIGNMENT.goes(_id).and(ASOFC).or(INC_DEC).and(_id).or(_eps);
         ASOFC.goes(ASOFC_).or(_open_paren).and(ARGS).and(_close_paren).or(INC_DEC);
 
         ASOFC_.goes(_peq).and(UNV_EXP).or(_seq).and(UNV_EXP).or(_meq).and(UNV_EXP).or(_deq).and(UNV_EXP).or(_eq).and(UNV_EXP);
@@ -118,7 +121,7 @@ class Kop {
 
         STATEMENT.goes(ASSIGNMENT).and(_semicolon).or(CONTROL).or(_print).and(_open_paren).and(E).and(_close_paren).and(_semicolon).or(_semicolon).or(SCOPE).or(_ret).and(E).and(_semicolon);
         STATEMENTS.goes(STATEMENT).and(STATEMENTS).or(_eps);
-        CONTROL.goes(_while).and(BODY).or(_if).and(BODY).or(_fun).and(_id).and(_open_paren).and(ARGS).and(_close_paren).and(SCOPE);
+        CONTROL.goes(_while).and(BODY).or(_if).and(BODY).or(_fun).and(_id).and(_open_paren).and(ARGS).and(_close_paren).and(SCOPE).or(_for).and(_open_paren).and(ASSIGNMENT).and(_semicolon).and(UNV_EXP).and(_semicolon).and(ASSIGNMENT).and(_close_paren).and(SCOPE);
         BODY.goes(_open_paren).and(UNV_EXP).and(_close_paren).and(STATEMENT);
         SCOPE.goes(_open_curly).and(STATEMENTS).and(_close_curly);
 
@@ -127,6 +130,15 @@ class Kop {
         cfg.buildParseTable();
         cfg.parseLL1();
 
-        System.out.println("Parsing success!");
+        for(int i=0;i<3;i++){
+            for(int j=0;j<10;j++){
+                System.out.print(".");
+                TimeUnit.MILLISECONDS.sleep(50);
+            }
+            TimeUnit.MILLISECONDS.sleep(100);
+            System.out.print("\b\b\b\b\b\b\b\b\b\b");
+        }
+
+        System.out.println("\u001B[32m"+"Code is syntactically current!, proceeding to semantic."+"\u001B[0m");
     }
 }
